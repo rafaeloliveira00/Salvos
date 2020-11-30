@@ -11,6 +11,14 @@ namespace Assets.Scripts.Player
 
         bool is_moving = false;
 
+
+        Rigidbody rigid_body;
+
+        void Start()
+        {
+            rigid_body = GetComponent<Rigidbody>();
+        }
+
         void FixedUpdate()
         {
             MovePlayer();
@@ -20,7 +28,7 @@ namespace Assets.Scripts.Player
         // function to perform the movement of the player
         void MovePlayer()
         {
-            GetComponent<Rigidbody>().velocity = velocity;
+            rigid_body.MovePosition(rigid_body.position + velocity * Time.fixedDeltaTime);
 
             if (velocity != Vector3.zero)
             {
