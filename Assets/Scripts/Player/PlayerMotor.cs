@@ -9,14 +9,15 @@ namespace Assets.Scripts.Player
         Vector3 velocity = Vector3.zero;
         Vector3 rotation = Vector3.zero;
 
-        bool is_moving = false;
-
-
         Rigidbody rigid_body;
+
+        // scripts
+        PlayerAnimator playerAnimator;
 
         void Start()
         {
             rigid_body = GetComponent<Rigidbody>();
+            playerAnimator = GetComponent<PlayerAnimator>();
         }
 
         void FixedUpdate()
@@ -28,17 +29,15 @@ namespace Assets.Scripts.Player
         // function to perform the movement of the player
         void MovePlayer()
         {
-            rigid_body.MovePosition(rigid_body.position + velocity * Time.fixedDeltaTime);
-
             if (velocity != Vector3.zero)
             {
-                is_moving = true;
-                // TODO - change the animation of the player to moving
+                rigid_body.MovePosition(rigid_body.position + velocity * Time.fixedDeltaTime);
+                // TODO - quick test
+                playerAnimator.ChangeState(PlayerState.MOVING_FORWARD);
             }
             else
             {
-                is_moving = false;
-                // TODO - change the animation of the player to IDLE
+                playerAnimator.ChangeState(PlayerState.IDLE);
             }
         }
 
@@ -48,6 +47,7 @@ namespace Assets.Scripts.Player
             Vector3 mouse_position = rotation;
 
             Vector3 object_position = Camera.main.WorldToScreenPoint(transform.position);
+
             mouse_position.x -= object_position.x;
             mouse_position.y -= object_position.y;
 
